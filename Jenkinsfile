@@ -7,7 +7,7 @@ pipeline {
         stage('Build') {
             agent {
                 docker {
-                    image 'node:18-alpine'
+                    image 'node:22-alpine'
                     // alow jenkins to reuse the same agent for entire pipline
                     reuseNode true
                 }
@@ -29,7 +29,7 @@ pipeline {
         stage('Test') {
             agent {
                 docker {
-                    image 'node:18-alpine'
+                    image 'node:22-alpine'
                     reuseNode true
                 }
             }
