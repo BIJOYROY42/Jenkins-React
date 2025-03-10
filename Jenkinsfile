@@ -64,15 +64,14 @@ pipeline {
                     # npm install netlify-cli
                     # node_modules/.bin/netlify --version
                     # echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
-                    #node_modules/.bin/netlify status
+                    # node_modules/.bin/netlify status
                     # # deploy to build folder
                     # node_modules/.bin/netlify deploy --prod --dir=build
 
                     ###### custom docker image
                     netlify --version
-                    # echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
+                    echo "Deploying to production. Site ID: $NETLIFY_SITE_ID"
                     netlify status
-                    # deploy to build folder
                     netlify deploy --prod --dir=build
                 '''
             }
