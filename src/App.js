@@ -3,7 +3,7 @@ import './App.css';
 
 function App() {
   return (
-    <p>This is my Jenkins React App--new</p>
+    <p>This is my Jenkins React App--update</p>
   );
 }
 
