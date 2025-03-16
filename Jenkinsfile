@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    environment{
+        AWS_DEFAULT_REGION = 'us-east-2'
+    }
     stages {
         
         stage('Docker'){
@@ -44,7 +47,7 @@ pipeline {
                 '''
             }
         }
-        stage('AWS'){
+        stage('Deploy to AWS'){
             agent{
                 docker{
                     image 'amazon/aws-cli'
@@ -52,18 +55,13 @@ pipeline {
                     args '--entrypoint=""'
                 }
             }
-            environment{
-                AWS_S3_BUCKET = 'my-jenkins-20250308'
-            }
+
             steps{
                 withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     // some block
                     sh '''
                         aws --version
-                        echo "Hello S3!" > index.html
-                        # aws s3 cp index.html s3://my-jenkins-20250308/index.html
-                        # aws s3 cp index.html s3://$AWS_S3_BUCKET/index.html
-                        aws s3 sync build s3://$AWS_S3_BUCKET
+                        aws ecs register-task-definition --cli-input-json file://aws/task-definition.json
                     '''
                 }
             }
