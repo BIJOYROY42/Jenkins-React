@@ -1,13 +1,5 @@
 pipeline {
     agent any
-    // In jenkins, test docker first
-    // Add jenkinsfile in react app, run hello world template
-    // Add Build and Test stage 
-    environment{
-        NETLIFY_SITE_ID = 'cc8030f9-3a86-4cf4-b83f-cfa3cc7b78ce'
-        NETLIFY_AUTH_TOKEN = credentials('Jenkins-React')
-    }
-
     stages {
         
         stage('Docker'){
@@ -19,7 +11,7 @@ pipeline {
             agent {
                 docker {
                     image 'node:22-alpine'
-                    // alow jenkins to reuse the same agent for entire pipline
+                    // for the same docker image, reuse
                     reuseNode true
                 }
             }
