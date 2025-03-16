@@ -2,10 +2,10 @@
     "requiresCompatibilities": [
         "FARGATE"
     ],
-    "family": "tempApp-TaskDefinition-Prod",
+    "family": "tempApp--TaskDefinition-Prod",
     "containerDefinitions": [
         {
-            "name": "JenkinsApp",
+            "name": "tempApp",
             "image": "nginx:1.27-alpine",
             "portMappings": [
                 {
