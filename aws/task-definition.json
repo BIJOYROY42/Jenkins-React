@@ -2,7 +2,7 @@
     "requiresCompatibilities": [
         "FARGATE"
     ],
-    "family": "JenkinsApp-TaskDefinition-Prod",
+    "family": "tempApp-TaskDefinition-Prod",
     "containerDefinitions": [
         {
             "name": "JenkinsApp",
