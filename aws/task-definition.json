@@ -6,7 +6,7 @@
     "containerDefinitions": [
         {
             "name": "tempApp",
-            "image": "nginx:1.27-alpine",
+            "image": "612634926349.dkr.ecr.us-east-2.amazonaws.com/tempapp:1.0.0",
             "portMappings": [
                 {
                     "name": "ngnix-80-tcp",
@@ -23,5 +23,5 @@
     "networkMode": "awsvpc",
     "memory": "512",
     "cpu": "256",
-    "executionRoleArn": ""
+    "executionRoleArn": "arn:aws:iam::612634926349:role/ecsTaskExecutionRole"
 }

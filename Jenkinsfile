@@ -8,6 +8,10 @@ environment {
         APP_NAME = 'tempapp'
         REACT_APP_VERSION = '1.0.0'
         AWS_DEFAULT_REGION = 'us-east-2'
+        AWS_ECS_CLUSTER = 'tempApp-Cluster-Prod'
+        AWS_ECS_SERVICE_PROD = 'tempApp-Service-Prod'
+        AWS_ECS_TD_PROD = 'tempApp--TaskDefinition-Prod'
+
     }
     stages {
         
@@ -65,6 +69,27 @@ environment {
                         docker build -t $AWS_DOCKER_REGISTRY/$APP_NAME:$REACT_APP_VERSION .
                         aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_DOCKER_REGISTRY
                         docker push $AWS_DOCKER_REGISTRY/$APP_NAME:$REACT_APP_VERSION
+                    '''
+                }
+            }
+        }
+
+        stage('Deploy to AWS'){
+            agent{
+                docker{
+                    image 'amazon/aws-cli'
+                    reuseNode true
+                    args '--entrypoint=""'
+                }
+            }
+
+            steps{
+                withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                    // some block
+                    sh '''
+                        aws --version
+                        aws ecs register-task-definition --cli-input-json file://aws/task-definition.json
+                        aws ecs update-service --cluster $AWS_ECS_CLUSTER --service $AWS_ECS_SERVICE_PROD --task-definition $AWS_ECS_TD_PROD:6
                     '''
                 }
             }
