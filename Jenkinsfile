@@ -1,8 +1,6 @@
 pipeline {
     agent any
-    environment{
-        AWS_DEFAULT_REGION = 'us-east-2'
-    }
+
     stages {
         
         stage('Build') {
@@ -42,7 +40,7 @@ pipeline {
                 '''
             }
         }
-        
+
         stage('Build My Docker Image'){
 
             agent{
@@ -60,27 +58,6 @@ pipeline {
                     amazon-linux-extras install docker
                     docker build -t my-docker-image .
                 '''
-            }
-        }
-
-        stage('Deploy to AWS'){
-            agent{
-                docker{
-                    image 'amazon/aws-cli'
-                    reuseNode true
-                    args '--entrypoint=""'
-                }
-            }
-
-            steps{
-                withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                    // some block
-                    sh '''
-                        aws --version
-                        aws ecs register-task-definition --cli-input-json file://aws/task-definition.json
-                        aws ecs update-service --cluster tempApp-Cluster-Prod --service tempApp-Service-Prod --task-definition tempApp--TaskDefinition-Prod:2
-                    '''
-                }
             }
         }
     }
