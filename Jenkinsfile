@@ -6,7 +6,7 @@ environment {
         AWS_DOCKER_REGISTRY = '612634926349.dkr.ecr.us-east-2.amazonaws.com'
         // your ECR repository name
         APP_NAME = 'tempapp'
-        REACT_APP_VERSION = '1.0.$BUILD_ID'
+        REACT_APP_VERSION = '1.0.0'
     }
     stages {
         
