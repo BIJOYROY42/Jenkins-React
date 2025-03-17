@@ -7,6 +7,7 @@ environment {
         // your ECR repository name
         APP_NAME = 'tempapp'
         REACT_APP_VERSION = '1.0.0'
+        AWS_DEFAULT_REGION = 'us-east-2'
     }
     stages {
         
