@@ -11,7 +11,7 @@ pipeline {
                     image 'amazon/aws-cli'
                     reuseNode true
                     // set up sock to communicate with docker daemon
-                    args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
+                    args '-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
                 }
             }
             steps{
