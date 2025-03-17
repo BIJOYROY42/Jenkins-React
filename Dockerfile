@@ -1,2 +1,2 @@
-FROM node:22-alpine
-RUN npm install -g netlify-cli
+FROM nginx:1.27-alpine
+COPY build /user/share/nginx/html

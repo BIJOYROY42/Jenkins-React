@@ -5,9 +5,23 @@ pipeline {
     }
     stages {
         
-        stage('Docker'){
+        stage('Build Docker Image'){
+            agent{
+                docker{
+                    image 'amazon/aws-cli'
+                    reuseNode true
+                    // set up sock to communicate with docker daemon
+                    args '-v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
+                }
+            }
             steps{
-                sh 'docker build -t my-docker-image .'
+                // In amazon/aws-cli, there is no docker installed, 
+                // so we need to install docker to run "docker build" command
+                sh '''
+                    amazon-linux-extras install docker
+                    docker build -t my-docker-image .
+                '''
+
             }
         }
         stage('Build') {
