@@ -6,7 +6,7 @@ environment {
         AWS_DOCKER_REGISTRY = '612634926349.dkr.ecr.us-east-2.amazonaws.com'
         // your ECR repository name
         APP_NAME = 'tempapp'
-        REACT_APP_VERSION = '1.0.0'
+        REACT_APP_VERSION = '1.0.1'
         AWS_DEFAULT_REGION = 'us-east-2'
         AWS_ECS_CLUSTER = 'tempApp-Cluster-Prod'
         AWS_ECS_SERVICE_PROD = 'tempApp-Service-Prod'
