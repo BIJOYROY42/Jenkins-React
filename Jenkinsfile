@@ -6,7 +6,7 @@ environment {
         AWS_DOCKER_REGISTRY = '612634926349.dkr.ecr.us-east-2.amazonaws.com'
         // your ECR repository name
         APP_NAME = 'mytemp'
-        REACT_APP_VERSION = '1.0.${BUILD_ID}'
+        REACT_APP_VERSION = '1.0.$BUILD_ID'
         AWS_DEFAULT_REGION = 'us-east-2'
     }
     stages {
@@ -60,12 +60,12 @@ environment {
             }
             steps{
                 withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
-                    def reactAppVersion = "1.0.${BUILD_ID}"
+                    
                     sh '''
                         amazon-linux-extras install docker
-                        docker build -t $AWS_DOCKER_REGISTRY/$APP_NAME:$reactAppVersion .
+                        docker build -t $AWS_DOCKER_REGISTRY/$APP_NAME .
                         aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_DOCKER_REGISTRY
-                        docker push $AWS_DOCKER_REGISTRY/$APP_NAME:$reactAppVersion
+                        docker push $AWS_DOCKER_REGISTRY/$APP_NAME
                     '''
                 }
             }
