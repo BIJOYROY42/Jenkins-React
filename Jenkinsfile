@@ -1,6 +1,14 @@
 pipeline {
     agent any
 
+environment {
+
+        AWS_DOCKER_REGISTRY = '612634926349.dkr.ecr.us-east-2.amazonaws.com'
+        // your ECR repository name
+        APP_NAME = 'mytemp'
+        REACT_APP_VERSION = '1.0.$BUILD_ID'
+        AWS_DEFAULT_REGION = 'us-east-2'
+    }
     stages {
         
         stage('Build') {
@@ -47,17 +55,18 @@ pipeline {
                 docker{
                     image 'amazon/aws-cli'
                     reuseNode true
-                    // set up sock to communicate with docker daemon
                     args '-u root -v /var/run/docker.sock:/var/run/docker.sock --entrypoint=""'
                 }
             }
             steps{
-                // In amazon/aws-cli, there is no docker installed, 
-                // so we need to install docker to run "docker build" command
-                sh '''
-                    amazon-linux-extras install docker
-                    docker build -t my-docker-image .
-                '''
+                withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                    sh '''
+                        amazon-linux-extras install docker
+                        docker build -t $AWS_DOCKER_REGISTRY/$APP_NAME:$REACT_APP_VERSION .
+                        aws ecr get-login-password | docker login --username AWS --password-stdin $AWS_DOCKER_REGISTRY
+                        docker push $AWS_DOCKER_REGISTRY/$APP_NAME:$REACT_APP_VERSION
+                    '''
+                }
             }
         }
     }
