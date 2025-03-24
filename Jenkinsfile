@@ -10,7 +10,8 @@ pipeline {
                 docker{
                     image 'amazon/aws-cli'
                     reuseNode true
-                    args '--entrypoint=""'
+                    // login as root, so that we could install jq
+                    args '-u root --entrypoint=""'
                 }
             }
 
@@ -23,7 +24,7 @@ pipeline {
                         # aws ecs update-service --cluster Temp-Cluster_Prod --service Temp-Service_Prod --task-definition Temp-TaskDefinition-Prod:4
                         
                         # Install jq in linux
-                        sudo yum install jq -y
+                        yum install jq -y
                         LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition.json | jq '.taskDefinition.revision')
                         aws ecs update-service --cluster Temp-Cluster_Prod --service Temp-Service_Prod --task-definition Temp-TaskDefinition-Prod:$LATEST_TD_REVISION
                     '''
