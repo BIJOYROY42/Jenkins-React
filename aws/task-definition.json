@@ -2,11 +2,11 @@
     "requiresCompatibilities": [
         "FARGATE"
     ],
-    "family": "tempApp--TaskDefinition-Prod",
+    "family": "Temp-TaskDefinition-Prod",
     "containerDefinitions": [
         {
-            "name": "tempApp",
-            "image": "612634926349.dkr.ecr.us-east-2.amazonaws.com/tempapp:1.0.0",
+            "name": "TeampApp",
+            "image": "nginx:1.27-alpine",
             "portMappings": [
                 {
                     "name": "ngnix-80-tcp",
@@ -23,5 +23,5 @@
     "networkMode": "awsvpc",
     "memory": "512",
     "cpu": "256",
-    "executionRoleArn": "arn:aws:iam::612634926349:role/ecsTaskExecutionRole"
+    "executionRoleArn": ""
 }
