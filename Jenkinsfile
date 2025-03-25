@@ -70,5 +70,27 @@ environment {
                 }
             }
         }
+
+        stage('Deploy to AWS'){
+            agent{
+                docker{
+                    image 'amazon/aws-cli'
+                    reuseNode true
+                    // login as root, so that we could install jq
+                    args '-u root --entrypoint=""'
+                }
+            }
+
+            steps{
+                withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                    // some block
+                    sh '''
+                        aws --version
+                        LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition.json | jq '.taskDefinition.revision')
+                        aws ecs update-service --cluster Temp-Cluster_Prod --service Temp-Service_Prod --task-definition Temp-TaskDefinition-Prod:$LATEST_TD_REVISION
+                    '''
+                }
+            }
+        }
     }
 }
