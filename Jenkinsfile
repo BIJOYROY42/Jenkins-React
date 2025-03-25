@@ -86,6 +86,7 @@ environment {
                     // some block
                     sh '''
                         aws --version
+                        yum install jq -y
                         LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition.json | jq '.taskDefinition.revision')
                         aws ecs update-service --cluster Temp-Cluster_Prod --service Temp-Service_Prod --task-definition Temp-TaskDefinition-Prod:$LATEST_TD_REVISION
                     '''
