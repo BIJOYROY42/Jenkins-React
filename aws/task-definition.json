@@ -2,11 +2,11 @@
     "requiresCompatibilities": [
         "FARGATE"
     ],
-    "family": "Temp-TaskDefinition-Prod",
+    "family": "MyNewReactApp-TaskDefinition-Prod",
     "containerDefinitions": [
         {
-            "name": "TeampApp",
-            "image": "612634926349.dkr.ecr.us-east-2.amazonaws.com/mytemp:latest",
+            "name": "MyNewReatApp",
+            "image": "612634926349.dkr.ecr.us-east-2.amazonaws.com/my_new_image:latest",
             "portMappings": [
                 {
                     "name": "ngnix-80-tcp",

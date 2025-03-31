@@ -5,8 +5,7 @@ environment {
 
         AWS_DOCKER_REGISTRY = '612634926349.dkr.ecr.us-east-2.amazonaws.com'
         // your ECR repository name
-        APP_NAME = 'mytemp'
-        // REACT_APP_VERSION = '1.0.1'
+        APP_NAME = 'my_new_image'
         AWS_DEFAULT_REGION = 'us-east-2'
     }
     stages {
@@ -15,7 +14,6 @@ environment {
             agent {
                 docker {
                     image 'node:22-alpine'
-                    // for the same docker image, reuse
                     reuseNode true
                 }
             }
@@ -59,7 +57,7 @@ environment {
                 }
             }
             steps{
-                withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                withCredentials([usernamePassword(credentialsId: 'myNewUser', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     
                     sh '''
                         amazon-linux-extras install docker
@@ -82,13 +80,13 @@ environment {
             }
 
             steps{
-                withCredentials([usernamePassword(credentialsId: 'my-aws', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
+                withCredentials([usernamePassword(credentialsId: 'myNewUser', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     // some block
                     sh '''
                         aws --version
                         yum install jq -y
                         LATEST_TD_REVISION=$(aws ecs register-task-definition --cli-input-json file://aws/task-definition.json | jq '.taskDefinition.revision')
-                        aws ecs update-service --cluster Temp-Cluster_Prod --service Temp-Service_Prod --task-definition Temp-TaskDefinition-Prod:$LATEST_TD_REVISION
+                        aws ecs update-service --cluster my-new-react-app-Cluster-Prod --service my-new-react-app-Service-Prod --task-definition MyNewReactApp-TaskDefinition-Prod:$LATEST_TD_REVISION
                     '''
                 }
             }
