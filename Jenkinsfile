@@ -51,6 +51,9 @@ pipeline {
                         aws s3 ls
                         echo "Hello S3" > index.html
                         aws s3 cp index.html s3://myfirstawsbucket422025/index.html
+                        aws s3 sync build   s3://myfirstawsbucket422025
+
+
                         # Create S3 bucket if it doesn't exist
                         aws s3api create-bucket --bucket $S3_BUCKET --region $AWS_DEFAULT_REGION --create-bucket-configuration LocationConstraint=$AWS_DEFAULT_REGION || true
                         
@@ -79,6 +82,17 @@ pipeline {
                     '''
                 }
             }
-        }
-    }
+        
 }
+//{
+//"version": "2012-10-17"
+//"Statement": [
+//    {
+//        "Sid": "Statement1",
+//        "Effect": "Allow",
+//        "Principal": "* ",
+//        "Action": ["s3:GetObject"],
+//        "Resource": ["arn:aws:s3:::myfirstawsbucket422025/*"]
+//    }
+//]
+//}
