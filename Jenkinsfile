@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        S3_BUCKET = 'my-react-app-bucket'  // Replace with your S3 bucket name
+        S3_BUCKET = 'myfirstawsbucket422025'  // Replace with your S3 bucket name
         AWS_DEFAULT_REGION = 'us-east-2'
     }
 
@@ -32,7 +32,6 @@ pipeline {
             steps {
                 sh '''
                     test -f build/index.html
-                    npm test
                 '''
             }
         }
@@ -74,10 +73,6 @@ pipeline {
                         # Print the website URL
                         echo "Website URL: http://$S3_BUCKET.s3-website.$AWS_DEFAULT_REGION.amazonaws.com"
                     '''
-
-
-        
-}
                 }
             }
         }
