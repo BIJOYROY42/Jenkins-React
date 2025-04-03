@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        S3_BUCKET = 'myfirstawsbucket422025'  // Replace with your S3 bucket name
+        S3_BUCKET = 'myfirstawsbucket422025'  
         AWS_DEFAULT_REGION = 'us-east-2'
     }
 
@@ -47,6 +47,10 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'my-temp-1', passwordVariable: 'AWS_SECRET_ACCESS_KEY', usernameVariable: 'AWS_ACCESS_KEY_ID')]) {
                     sh '''
+                        aws --version
+                        aws s3 ls
+                        echo "Hello S3" > index.html
+                        aws s3 cp index.html s3://myfirstawsbucket422025/index.html
                         # Create S3 bucket if it doesn't exist
                         aws s3api create-bucket --bucket $S3_BUCKET --region $AWS_DEFAULT_REGION --create-bucket-configuration LocationConstraint=$AWS_DEFAULT_REGION || true
                         
